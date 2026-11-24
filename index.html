@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DoneDrop | Team Workspace</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- LOGIN PAGE -->
+  <section class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="brand-icon login-icon">D</div>
+      <p class="eyebrow">YOUR TEAM WORKSPACE</p>
+      <h1>Welcome to DoneDrop</h1>
+      <p class="muted login-description">Sign in and make teamwork flow. Manage your tasks, track progress and stay organized.</p>
+
+      <form id="loginForm">
+        <label for="loginName">Full name</label>
+        <input type="text" id="loginName" placeholder="Enter your name" required>
+
+        <label for="loginEmail">Email address</label>
+        <input type="email" id="loginEmail" placeholder="Enter your email" required>
+
+        <button type="submit" class="primary-btn login-submit">Enter workspace →</button>
+      </form>
+      <p class="login-footer">DoneDrop · Make teamwork flow.</p>
+    </div>
+  </section>
+
+  <!-- MAIN APPLICATION -->
+  <div class="app" id="mainApp" hidden>
+
+    <aside class="sidebar">
+      <a class="brand" href="#">
+        <span class="brand-icon">D</span>
+        <span>DoneDrop<small>TEAM WORKSPACE</small></span>
+      </a>
+
+      <p class="nav-label">WORKSPACE</p>
+      <button class="nav-item active" data-view="overview">▦ <span>Overview</span></button>
+      <button class="nav-item" data-view="tasks">☷ <span>All tasks</span><b id="navTaskCount">0</b></button>
+      <button class="nav-item" data-view="team">♙ <span>Team members</span></button>
+
+      <p class="nav-label">YOUR SPACE</p>
+      <button class="nav-item" data-view="activity">◷ <span>Activity log</span></button>
+
+      <div class="sidebar-bottom">
+        <div class="profile">
+          <div class="avatar purple" id="sidebarAvatar">U</div>
+          <div class="profile-info">
+            <strong id="sidebarName">Member</strong>
+            <small id="sidebarEmail">Email</small>
+          </div>
+          <button class="logout-btn" id="logoutBtn" title="Logout">↪</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="pageName">Overview</strong></div>
+        <div class="top-actions">
+          <span class="today" id="todayLabel"></span>
+          <button class="icon-button" id="themeBtn" title="Toggle theme">◐</button>
+          <button class="primary-btn" id="addTaskBtn">＋ New task</button>
+        </div>
+      </header>
+
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow">YOUR WORKSPACE</p>
+          <h1 id="heading">Welcome back!</h1>
+          <p class="muted" id="subheading">Here's what's happening with your team today.</p>
+        </div>
+      </section>
+
+      <!-- STATISTICS -->
+      <section class="stats-grid">
+        <article class="stat-card">
+          <div class="stat-top"><span>Total tasks</span><span class="stat-icon blue">☷</span></div>
+          <strong id="totalStat">0</strong>
+          <small>Tasks in this workspace</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>In progress</span><span class="stat-icon orange">◷</span></div>
+          <strong id="activeStat">0</strong>
+          <small>Currently being worked on</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>Completed</span><span class="stat-icon green">✓</span></div>
+          <strong id="completedStat">0</strong>
+          <small>Successfully finished</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>Overdue</span><span class="stat-icon red">!</span></div>
+          <strong id="overdueStat">0</strong>
+          <small>Past their due date</small>
+        </article>
+      </section>
+
+      <!-- ANALYTICS -->
+      <section class="content-grid">
+        <div class="panel">
+          <div class="panel-heading">
+            <div>
+              <h2>Project progress</h2>
+              <p class="muted">Overall team performance</p>
+            </div>
+            <span class="soft-tag">LIVE OVERVIEW</span>
+          </div>
+
+          <div class="progress-content">
+            <div class="progress-ring" id="progressRing">
+              <div><strong id="progressPercent">0%</strong><small>completed</small></div>
+            </div>
+            <div class="progress-details">
+              <div class="legend-row"><span class="legend-dot done"></span>Completed<strong id="legendDone">0</strong></div>
+              <div class="legend-row"><span class="legend-dot doing"></span>In progress<strong id="legendDoing">0</strong></div>
+              <div class="legend-row"><span class="legend-dot todo"></span>To do<strong id="legendTodo">0</strong></div>
+              <p class="progress-note">Every completed task moves your team forward!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-heading">
+            <div>
+              <h2>Team workload</h2>
+              <p class="muted">Tasks assigned to each member</p>
+            </div>
+            <button class="text-btn" data-view="team">View team →</button>
+          </div>
+          <div id="workloadList" class="workload-list"></div>
+        </div>
+      </section>
+
+      <!-- TASKS -->
+      <section class="panel tasks-panel">
+        <div class="panel-heading task-heading">
+          <div>
+            <h2 id="taskSectionTitle">Recent tasks</h2>
+            <p class="muted">Track, manage and complete your team's work</p>
+          </div>
+          <button class="outline-btn" id="viewAllBtn">View all tasks →</button>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-box">⌕ <input id="searchInput" type="search" placeholder="Search tasks..."></div>
+
+          <select id="statusFilter">
+            <option value="all">All statuses</option>
+            <option value="todo">To do</option>
+            <option value="doing">In progress</option>
+            <option value="done">Completed</option>
+          </select>
+
+          <select id="priorityFilter">
+            <option value="all">All priorities</option>
+            <option value="Urgent">Urgent</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+
+          <select id="assigneeFilter">
+            <option value="all">All members</option>
+          </select>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>TASK</th>
+                <th>ASSIGNEE</th>
+                <th>PRIORITY</th>
+                <th>DUE DATE</th>
+                <th>STATUS</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="taskTable"></tbody>
+          </table>
+
+          <div id="emptyState" class="empty-state" hidden>
+            <div>☷</div>
+            <h3>No tasks found</h3>
+            <p>Try changing your filters or create a new task.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TEAM PAGE -->
+      <section class="panel extra-page" id="teamPage" hidden>
+        <div class="panel-heading">
+          <div><h2>Your team</h2><p class="muted">People working on this workspace</p></div>
+        </div>
+        <div class="team-grid" id="teamGrid"></div>
+      </section>
+
+      <!-- ACTIVITY PAGE -->
+      <section class="panel extra-page" id="activityPage" hidden>
+        <div class="panel-heading">
+          <div><h2>Activity log</h2><p class="muted">Recent workspace updates</p></div>
+        </div>
+        <div id="activityList" class="activity-list"></div>
+      </section>
+
+      <footer>DoneDrop <span>·</span> Make teamwork flow.</footer>
+    </main>
+  </div>
+
+  <!-- CREATE / EDIT TASK MODAL -->
+  <div class="modal-backdrop" id="taskModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div><p class="eyebrow">TASK MANAGEMENT</p><h2 id="modalTitle">Create a task</h2></div>
+        <button class="close-btn" data-close="taskModal">×</button>
+      </div>
+
+      <form id="taskForm">
+        <input type="hidden" id="taskId">
+
+        <label>Task title *</label>
+        <input id="taskTitle" required maxlength="90" placeholder="Enter task title">
+
+        <label>Description</label>
+        <textarea id="taskDescription" rows="3" placeholder="Describe the task..."></textarea>
+
+        <div class="form-row">
+          <div>
+            <label>Assignee</label>
+            <select id="taskAssignee"></select>
+          </div>
+          <div>
+            <label>Role</label>
+            <select id="taskRole">
+              <option>Frontend</option>
+              <option>Backend</option>
+              <option>Design</option>
+              <option>Documentation</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label>Priority</label>
+            <select id="taskPriority">
+              <option>Low</option>
+              <option>Medium</option>
+              <option>High</option>
+              <option>Urgent</option>
+            </select>
+          </div>
+          <div>
+            <label>Status</label>
+            <select id="taskStatus">
+              <option value="todo">To do</option>
+              <option value="doing">In progress</option>
+              <option value="done">Completed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label>Due date</label>
+            <input type="date" id="taskDue">
+          </div>
+          <div>
+            <label>Estimated hours</label>
+            <input type="number" id="taskHours" min="0" value="2">
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="outline-btn" data-close="taskModal">Cancel</button>
+          <button type="submit" class="primary-btn" id="saveTaskBtn">Create task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TASK DETAILS MODAL -->
+  <div class="modal-backdrop" id="detailModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div><p class="eyebrow">TASK DETAILS</p><h2 id="detailTitle">Task title</h2></div>
+        <button class="close-btn" data-close="detailModal">×</button>
+      </div>
+
+      <p class="detail-description" id="detailDescription"></p>
+      <div class="detail-grid" id="detailInfo"></div>
+
+      <div class="modal-actions">
+        <button class="danger-btn" id="deleteTaskBtn">Delete task</button>
+        <button class="outline-btn" data-close="detailModal">Close</button>
+        <button class="primary-btn" id="editTaskBtn">Edit task</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
